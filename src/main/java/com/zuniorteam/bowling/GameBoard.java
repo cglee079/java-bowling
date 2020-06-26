@@ -8,22 +8,26 @@ import com.zuniorteam.bowling.core.user.User;
 import com.zuniorteam.bowling.core.value.FrameNumber;
 import com.zuniorteam.bowling.core.value.PinSize;
 import com.zuniorteam.bowling.core.value.PitchType;
-import com.zuniorteam.bowling.view.InputConsole;
-import com.zuniorteam.bowling.view.OutputConsole;
+import com.zuniorteam.bowling.view.Input;
+import com.zuniorteam.bowling.view.Output;
+import com.zuniorteam.bowling.view.console.ConsoleInput;
+import com.zuniorteam.bowling.view.console.ConsoleOutput;
+import com.zuniorteam.bowling.view.console.parser.InputParser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zuniorteam.bowling.InputRender.getFallenPin;
 import static com.zuniorteam.bowling.core.pitch.Pitch.END;
 
 public class GameBoard {
 
-    private final InputConsole inputConsole = new InputConsole();
-    private final OutputConsole outputConsole = new OutputConsole();
+    private final InputParser inputParser = new InputParser();
+
+    private final Input input = new ConsoleInput();
+    private final Output output = new ConsoleOutput();
 
     public void startGame() {
-        final User user = InputRender.getUser(inputConsole.readUsername());
+        final User user = inputParser.getUser(input.readUsername());
         final String username = user.getUsername();
 
         final Frame firstFrame = new NormalFrame(FrameNumber.FIRST);
@@ -37,11 +41,11 @@ public class GameBoard {
             return;
         }
 
-        final PinSize fallenPinSize = getFallenPin(inputConsole.readFallenPin(pitch.getFrameNumber()));
+        final PinSize fallenPinSize = inputParser.getFallenPin(input.readFallenPin(pitch.getFrameNumber()));
         final PitchResult playResult = pitch.play(fallenPinSize);
         pitchResults.add(playResult);
 
-        outputConsole.writeScore(username, pitchResults);
+        output.writeScore(username, pitchResults);
 
         playPitch(pitch.next(), username, pitchResults);
     }

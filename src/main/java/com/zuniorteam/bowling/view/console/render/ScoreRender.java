@@ -1,4 +1,4 @@
-package com.zuniorteam.bowling.view.render;
+package com.zuniorteam.bowling.view.console.render;
 
 import com.zuniorteam.bowling.core.dto.PitchResult;
 import com.zuniorteam.bowling.core.value.FrameNumber;
